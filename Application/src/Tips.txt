@@ -1,0 +1,10 @@
+Pour démarré l'application :
+- Ouvrire un émulateur endroid,
+- Allez dans le dossier du projet en l'occurrence MonProject,
+- cd MonProject
+- utiliser la ligne de commande suivante :
+npm run android
+
+npx react-devtools
+
+npm start -- --reset-cache
