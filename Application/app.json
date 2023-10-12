@@ -1,0 +1,33 @@
+{
+	"expo": {
+	  "name": "HolyConnect",
+	  "slug": "HolyConnect",
+	  "version": "1.0.0",
+	  "orientation": "portrait",
+	  "icon": "./assets/defaults/icon.png",
+	  "userInterfaceStyle": "light",
+	  "splash": {
+		"image": "./assets/defaults/splash.png",
+		"resizeMode": "contain",
+		"backgroundColor": "#ffffff"
+	  },
+	  "assetBundlePatterns": [
+		"**/*"
+	  ],
+	  "ios": {
+		"supportsTablet": true,
+		"bundleIdentifier": "com.zana.HolyConnect"
+	  },
+	  "android": {
+		"package": "com.zana.HolyConnect",
+		"adaptiveIcon": {
+		  "foregroundImage": "./assets/defaults/adaptive-icon.png",
+		  "backgroundColor": "#ffffff"
+		}
+	  },
+	  "web": {
+		"favicon": "./assets/icons/favicon.png"
+	  },
+	  "plugins": ["@react-native-google-signin/google-signin"]
+	}
+  }
