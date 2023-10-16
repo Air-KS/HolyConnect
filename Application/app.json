@@ -16,10 +16,16 @@
 	  ],
 	  "ios": {
 		"supportsTablet": true,
-		"bundleIdentifier": "com.zana.HolyConnect"
+		"bundleIdentifier": "com.zana.HolyConnect",
+		"infoPlist": {
+		   "NSLocationWhenInUseUsageDescription": "Autorisez-vous HolyConnect à accéder à votre localisation lorsque l'application est en cours d'utilisation seulement ?",
+		   "NSLocationAlwaysUsageDescription": "Autorisez-vous HolyConnect à accéder à votre localisation même lorsque l'application n'est pas en cours d'utilisation ?",
+		   "NSLocationAlwaysAndWhenInUseUsageDescription": "Autorisez-vous HolyConnect à accéder à votre localisation en tout temps, même lorsque l'application n'est pas en cours d'utilisation ?"
+		}
 	  },
 	  "android": {
 		"package": "com.zana.HolyConnect",
+		"permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION", "LOCATION"],
 		"adaptiveIcon": {
 		  "foregroundImage": "./assets/defaults/adaptive-icon.png",
 		  "backgroundColor": "#ffffff"
@@ -30,4 +36,4 @@
 	  },
 	  "plugins": ["@react-native-google-signin/google-signin"]
 	}
-  }
+}
