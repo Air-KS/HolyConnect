@@ -1,17 +1,17 @@
 // src/styles/bulText.js
 
+// Importation de la dépendance nécessaire pour créer des styles
 import { StyleSheet } from 'react-native';
 
+// Définition des styles pour les textes en forme de bulle
 const stylesBulText = StyleSheet.create({
-  signUp: {
-    flexGrow: 1,
-  },
-
+  // Style pour le conteneur principal
   container: {
     flex: 1,
     justifyContent: 'center',
   },
 
+  // Style pour le texte informatif
   infoText: {
     fontSize: 16,
     color: '#264A4A',
@@ -29,4 +29,5 @@ const stylesBulText = StyleSheet.create({
 });
 
 
+// Exportation des styles pour une utilisation dans d'autres fichiers
 export default stylesBulText;
