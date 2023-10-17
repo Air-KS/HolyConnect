@@ -26,6 +26,7 @@ const MenuProfil = () => {
     SignUp: 'Inscription',
     Location: 'Mes Locations',
     CreateLocation: 'Création de Location',
+    UiInterface: 'Interface',
     ApLocation: 'Aperçus Final',
     Profil: 'Mon Profile',
     // ... autres écrans ...
