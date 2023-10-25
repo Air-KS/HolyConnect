@@ -15,6 +15,7 @@ import Location from './src/navigation/location';
 import createLocation from './src/navigation/creacteLocation';
 import apLocation from './src/navigation/apLocation';
 import Profil from './src/navigation/profil';
+import UiInterface from './src/navigation/UiInterface';
 
 // Initialisation du navigateur Stack
 const Stack = createStackNavigator();
@@ -114,10 +115,22 @@ export default function App() {
               }}
             />
 
-            {/* Écran de location (Aperçus) */}
+            {/* Écran de location (Aperçus Final) */}
             <Stack.Screen
               name="ApLocation"
               component={apLocation}
+              options={{
+                headerTitle:'',
+                headerStyle: {backgroundColor: '#E9E9E9'},
+                headerShown: true,
+                headerRight: () => <MenuProfil />
+              }}
+            />
+
+            {/* Écran de location */}
+            <Stack.Screen
+              name="UiInterface"
+              component={UiInterface}
               options={{
                 headerTitle:'',
                 headerStyle: {backgroundColor: '#E9E9E9'},
