@@ -4,7 +4,8 @@
 import React, { useState, useContext } from 'react';
 import { View, ScrollView, Text, TextInput, Button } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext, userId } from '../contexts/AuthContext';
+import { saveUserLocationToFile } from '../utils/fileManager';
 import scrollView from '../screens/scrollView';
 import tabStyle from '../styles/tabBar';
 import baseStyle from '../styles/baseStyle';
@@ -12,76 +13,40 @@ import formStyle from '../styles/formStyle';
 
 // Les composants de chaque onglet
 function InfoGeneral({ localTitre, setLocalTitre }) {
-    return (
-        <ScrollView style={scrollView.scrollView}>
-            <View style={[tabStyle.scene]}>
-                <Text>Informations générales</Text>
-                <Text style={{ ...baseStyle.text, fontSize: 20 }}>Nom de location</Text>
-                <View style={formStyle.input}>
-                    <TextInput
-                        style={formStyle.text}
-                        placeholder="Nom de location"
-                        value={localTitre}
-                        onChangeText={setLocalTitre}
-                        autoCapitalize="none"
-                        selectionColor="#264A4A"
-                        returnKeyType="next"
-                    />
-                </View>
-            </View>
-        </ScrollView>
-    );
+    // Composant pour les informations générales
 }
 
+// Composant pour l'adresse
 function Adresse({ address, setAddress }) {
-    return (
-        <ScrollView style={scrollView.scrollView}>
-            <View style={[tabStyle.scene]}>
-                <Text>Adresse</Text>
-                <Text style={{ ...baseStyle.text, fontSize: 20 }}>Adresse Complète</Text>
-                <View style={formStyle.input}>
-                    <TextInput
-                        style={formStyle.text}
-                        placeholder="Adresse Complète"
-                        value={address}
-                        onChangeText={setAddress}
-                        autoCapitalize="none"
-                        selectionColor="#264A4A"
-                        returnKeyType="next"
-                    />
-                </View>
-            </View>
-        </ScrollView>
-    );
+    // Composant pour l'adresse
 }
 
+// Layout initial pour l'onglet
 const initialLayout = { width: '100%' };
 
-// Composant représentant l'écran d'accueil
+// Composant représentant l'écran de création de location
 function CreateLocation({ navigation }) {
+    const { userId } = useContext(AuthContext);
 
+    // États locaux pour le titre de la location et l'adresse
     const [localTitre, setLocalTitre] = useState('');
     const [address, setAddress] = useState('');
 
+    // États pour l'onglet actif
     const [index, setIndex] = useState(0);
     const [routes] = useState([
         { key: 'infoGeneral', title: 'Info Générale' },
         { key: 'adresse', title: 'Adresse' }
     ]);
 
+    // Fonction pour rendre le contenu de chaque onglet
     const renderScene = ({ route }) => {
-        switch (route.key) {
-            case 'infoGeneral':
-                return <InfoGeneral localTitre={localTitre} setLocalTitre={setLocalTitre} />;
-            case 'adresse':
-                return <Adresse address={address} setAddress={setAddress} />;
-            default:
-                return null;
-        }
+        // Rendre le contenu en fonction de l'onglet actif
     };
 
     return (
         <View style={{ flex: 1 }}>
+            {/* Composant de TabView pour gérer les onglets */}
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
@@ -98,11 +63,17 @@ function CreateLocation({ navigation }) {
                 <Button
                     title="Sauvegarder"
                     onPress={async () => {
-                      //await saveUserLocationFromFile(userId, localTitre);
-                      navigation.navigate('Location', {
-                          locationTitle: localTitre,
-                          locationAddress: address
-                      });
+                        // Sauvegarder les informations de la nouvelle location
+                        const newLocation = {
+                            title: localTitre,
+                            address: address,
+                        };
+                        await saveUserLocationToFile(userId, newLocation);
+                        // Naviguer vers une autre interface avec les données de la location
+                        navigation.navigate('UiInterface', {
+                            locationTitle: localTitre,
+                            locationAddress: address
+                        });
                     }}
                 />
             </View>
