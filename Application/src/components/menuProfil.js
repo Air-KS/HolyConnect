@@ -17,7 +17,7 @@ const MenuProfil = () => {
   const route = useRoute();
 
   // Récupération des fonctions et états depuis le contexte d'authentification
-  const { isUserLoggedIn, logOut, userId } = useContext(AuthContext);
+  const { isUserLoggedIn, logOut, userId, userPseudo } = useContext(AuthContext);
 
   // Titres par défaut pour les différentes routes
   const defaultTitles = {
@@ -58,31 +58,36 @@ const MenuProfil = () => {
           <MenuOptions customStyles={{ optionsContainer: menuProfil.menuContainer }}>
             {isUserLoggedIn ? (
               <>
+
+              <Text style={{ textAlign: 'center' }}>
+                {userPseudo ? 'Bonjour, ' : 'Non connecté'}
+                {userPseudo &&<Text style={{ fontWeight: 'bold' }}>{userPseudo}</Text>} {'\n'} </Text>
+
                 {/* Options pour les utilisateurs connectés */}
                 <MenuOption onSelect={() => {
                   navigation.navigate('Profil');
                   console.log("Bouton Profile");
                 }}
-                  text={userId || 'Profile'} />
+                  text={'> Mon Profile'} />
 
                 <MenuOption onSelect={() => {
                   navigation.navigate('Location');
                   console.log("Bouton Mes Locations");
                 }}
-                  text='Mes Locations' />
+                  text='> Mes Locations' />
 
                 <MenuOption onSelect={() => {
                   console.log("Bouton Options");
                   // fonction pour les options
                 }}
-                  text='Options' />
+                  text='> Options' />
 
                 <MenuOption onSelect={ () => {
                   logOut();
                   navigation.navigate('Home');
                   console.log("Déconnexion");
                 }}
-                  text='Déconnexion' />
+                  text='> Déconnexion' />
               </>
             ) : (
               <>
