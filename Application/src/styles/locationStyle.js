@@ -18,7 +18,6 @@ const locationStyle = StyleSheet.create({
   text: {
     fontSize: 20,
     color: '#264A4A',
-    //textAlign: 'center',
   },
   textLocal: {
     borderRadius: 15,
@@ -37,6 +36,7 @@ const locationStyle = StyleSheet.create({
 
   // Style pour le conteneur d'adresse
   addressContainer: {
+    borderColor: '#264A4A',
     width: '70%',
     height: 100,
     backgroundColor: '#E9E9E9',
@@ -50,8 +50,6 @@ const locationStyle = StyleSheet.create({
     color: '#264A4A',
     marginLeft: '4%',
     marginRight: '4%',
-
-    //textAlign: 'center',
   },
 
   // Style pour le conteneur des paramètres du panneau
@@ -70,6 +68,7 @@ const locationStyle = StyleSheet.create({
   },
   // Style pour les panneaux gauche
   panelLeft: {
+    borderColor: '#264A4A',
     alignItems: 'center',
     justifyContent: 'center',
     width: '80%',
@@ -80,6 +79,7 @@ const locationStyle = StyleSheet.create({
   },
   /// Style pour les panneaux droit
   panelRight: {
+    borderColor: '#264A4A',
     alignItems: 'center',
     justifyContent: 'center',
     width: '80%',
@@ -96,11 +96,11 @@ const locationStyle = StyleSheet.create({
     marginRight: '4%',
     marginTop: '5%',
     marginBottom: '5%',
-    //textAlign: 'center',
   },
 
   // Style pour le conteneur d'image
   imageContainer: {
+    borderColor: '#264A4A',
     width: 200,
     height: 150,
     marginTop: '10%',
@@ -121,12 +121,12 @@ const locationStyle = StyleSheet.create({
   },
 
   // Styles pour le swiper
-  wrapper: {}, // Styles pour le swiper
+  wrapper: {},
   slide: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#9DD6EB', // Exemple de couleur de fond
+    backgroundColor: '#9DD6EB', // Couleur de fond
   },
 
   // Style pour les images des pannaux
@@ -134,6 +134,32 @@ const locationStyle = StyleSheet.create({
     width: '90%',
     height: '90%',
     borderRadius: 15,
+  },
+
+  listItem: {
+    borderColor: 'grey',
+    width: 250,
+    marginTop: '10%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E9E9E9',
+    borderRadius: 15,
+    borderWidth: 3,
+    marginBottom: '5%',
+  },
+
+  buttonsContainer: {
+    borderColor: '#264A4A',
+    width: 220,
+    backgroundColor: '#E9E9E9',
+    flexDirection: 'row', // Pour aligner horizontalement les boutons
+    justifyContent: 'space-between', // Pour espacer les boutons à gauche et à droite
+    margingLeft: 20,
+    fontWeight: 'bold'
+  },
+
+  buttonText: {
+    fontWeight: 'bold',
   },
 
 });
