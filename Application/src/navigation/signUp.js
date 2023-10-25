@@ -4,7 +4,7 @@
 import React, { useState, useRef, useContext } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
-import { readUserDataFromFile, saveUserDataToFile } from '../utils/fileManager';
+import { readUserDataFromFile, saveUserDataToFile, generateUniqueID } from '../utils/fileManager';
 import { FontAwesome } from '@expo/vector-icons';
 import stylesBulText from '../styles/bulText';
 import scrollView from '../screens/scrollView';
@@ -39,7 +39,7 @@ const SignUpScreen = ({ navigation }) => {
   const passwordRef = useRef(null);
 
   // Utilisation du contexte d'authentification pour gérer la connexion
-  const { setUserLoggedIn } = useContext(AuthContext);
+  const { setUserLoggedIn, updateUserPseudo } = useContext(AuthContext);
 
   // Fonction pour valider les champs du formulaire
   const validateForm = () => {
@@ -98,6 +98,7 @@ const SignUpScreen = ({ navigation }) => {
 
       // Création de l'objet utilisateur
       const userData = {
+        id: generateUniqueID(),
         username: username,
         userfirsname: userfirstname,
         userpseudoname: userpseudoname,
@@ -108,6 +109,7 @@ const SignUpScreen = ({ navigation }) => {
       // Enregistrement des données de l'utilisateur
       await saveUserDataToFile(userData);
       setUserLoggedIn(true);
+      updateUserPseudo(userpseudoname);
       navigation.navigate('Home');
     }
   };
