@@ -21,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true); // État pour masquer/afficher le mot de passe
 
   // Utilisation du contexte d'authentification
-  const { setUserLoggedIn } = useContext(AuthContext);
+  const { setUserLoggedIn, setAuthContextUserId, setUserPseudo, updateUserPseudo } = useContext(AuthContext);
 
   // Référence pour le champ du mot de passe
   const passwordRef = useRef(null);
@@ -45,12 +45,19 @@ const LoginScreen = ({ navigation }) => {
     // Vérifiez si l'utilisateur existe dans le fichier
     const users = await readUserDataFromFile();
     const userExists = users.some(user => (user.userpseudoname === userpseudoname || user.useremail === userpseudoname) && user.userpassword === password);
+    console.log("userExists:", userExists);
 
     // Si l'utilisateur existe, connectez-vous, sinon affichez une erreur
     if (userExists) {
+      console.log("Utilisateur trouvé avant mise à jour:", userFound);
       setUserLoggedIn(true);
       const userFound = users.find(user => (user.userpseudoname === userpseudoname || user.useremail === userpseudoname) && user.userpassword === password);
-      setUserId(userFound.userpseudoname);
+      console.log("Utilisateur trouvé avant mise à jour:", userFound);
+      setUserId(userFound.id);
+      setAuthContextUserId(userFound.id);
+      setUserPseudo(userFound.userpseudo);
+      updateUserPseudo(userFound.userpseudoname);
+      console.log("Utilisateur trouvé après mise à jour:", userFound);
       navigation.navigate('Home');
     } else {
       alert('Erreur : Identification ou mot de passe incorrect. Veuillez réessayer.');
