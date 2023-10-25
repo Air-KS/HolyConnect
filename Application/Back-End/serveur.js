@@ -1,22 +1,24 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const apirouter = require("./api/apirouter").router;
+const errorHandler = require("./config/errorHandler");
 
 const app = express();
 const port = 3000;
 
 // Fonction asynchrone pour vérifier la connexion à la base de données
 
+// Middleware pour ajouter des headers sur les requêtes
+
 // Middleware pour traiter les requêtes
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Middleware pour les routes
 app.use("/api", apirouter);
 
-app.get("/", function (req, res) {
-  res.setHeader("content-type", "text/html");
-  res.status(200).send("Hello, World!"); // Exemple de réponse HTML
-});
+// Middleware pour gérer les erreurs
+app.use(errorHandler);
 
 // Lancer le serveur
 app.listen(port, () => {
