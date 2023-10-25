@@ -125,4 +125,5 @@ function CreateLocation({ navigation }) {
     );
 }
 
+// Exportation du composant pour une utilisation dans d'autres fichiers
 export default CreateLocation;
