@@ -1,8 +1,12 @@
+// Définition des routes relatives aux profils utilisateurs
+// 1.0.0
+// Auteur: LENNE Sebastien
+
 // importation des modules
 const jwtUtils = require("../utils/jwt");
 const { Userinfo } = require("../Models"); // Assurez-vous d'importer le bon modèle
 
-// routes
+// routes relatives a la creation du profils utilisateurs
 module.exports = {
   createprofile: async (req, res) => {
     // récupération du header d'authentification
@@ -29,7 +33,6 @@ module.exports = {
       !dateofbirth ||
       !phonenumber ||
       !adress1 ||
-      !adress2 ||
       !city ||
       !zipcode ||
       !country
@@ -91,7 +94,7 @@ module.exports = {
       });
   },
 
-  // route readprofile
+  // route read profile utilisateur
   readprofile: async (req, res) => {
     // Code pour lire le profil
     const headerAuth = req.headers["authorization"];
@@ -116,7 +119,7 @@ module.exports = {
       });
   },
 
-  // route updateprofile
+  // route mise jour du profil utilisateur
   updateprofile: async (req, res) => {
     // Code pour modifier le profil
     const headerAuth = req.headers["authorization"];
@@ -164,7 +167,7 @@ module.exports = {
       });
   },
 
-  // route deleteprofile
+  // route delete profile utilisateur
   deleteprofile: async (req, res) => {
     // Code pour supprimer le profil
     const headerAuth = req.headers["authorization"];
