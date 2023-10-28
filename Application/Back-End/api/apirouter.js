@@ -3,10 +3,13 @@
 // Auteur: LENNE Sebastien
 
 const express = require("express");
+const multer = require("multer"); // Importez le module multer ici
 const usersctrl = require("../routes/usersctrl");
 const userinfosctrl = require("../routes/userinfosctrl");
 const homelocationsctrl = require("../routes/homelocationsctrl");
 const notelocationsctrl = require("../routes/notelocationsctrl");
+
+const upload = multer(); // Configuration de multer ici
 
 exports.router = (function () {
   // Création du routeur
