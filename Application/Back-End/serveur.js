@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const apirouter = require("./api/apirouter").router;
+const errorHandler = require("./config/errorHandler");
+
 const cors = require("cors");
 
 const app = express();
