@@ -15,14 +15,13 @@ exports.router = (function () {
   // Définition des routes liées aux utilisateurs
   apiRouter.route("/users/register").post(usersctrl.register);
   apiRouter.route("/users/login").post(usersctrl.login);
-  apiRouter.route("/users/me").get(usersctrl.getuserProfile);
   apiRouter.route("/users/delete").delete(usersctrl.userdelete);
   apiRouter.route("/users/reset").put(usersctrl.resetpassword);
   apiRouter.route("/users/logout").post(usersctrl.UserLogout);
 
   // Définition des routes liées aux infos utilisateurs
   apiRouter.route("/userinfo/newinfo").post(userinfosctrl.createprofile);
-  apiRouter.route("/userinfo/getinfo").get(userinfosctrl.readprofile);
+  apiRouter.route("/userinfo/getinfo").get(userinfosctrl.getprofile);
   apiRouter.route("/userinfo/updateinfo").put(userinfosctrl.updateprofile);
   apiRouter.route("/userinfo/deleteinfo").delete(userinfosctrl.deleteprofile);
 
@@ -37,12 +36,14 @@ exports.router = (function () {
     .delete(homelocationsctrl.deletelocations);
 
   // Définition des routes liées aux note de locations
-  apiRouter.route("/notelocation/newnote").post(notelocationsctrl.createnotes);
+  apiRouter.route("/notelocation/newnote").post(notelocationsctrl.newnotes);
   apiRouter.route("/notelocation/getnote").get(notelocationsctrl.getnotes);
   apiRouter
     .route("/notelocation/updatenote")
     .put(notelocationsctrl.updatenotes);
-  //apiRouter.route("/users/homelocation/notes").delete(usersctrl.deletenotes);
+  apiRouter
+    .route("/notelocation/deletenote")
+    .delete(notelocationsctrl.deletenotes);
 
   return apiRouter;
 })();
