@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       notelocation.belongsTo(models.homelocation, {
         // This is the association with the table userinfo
-        foreignKey: "home_Id", // This is the foreign key of the table userinfo
-        as: "notelocation", // This is the alias of the table userinfo
+        foreignKey: "locationID", // This is the foreign key of the table userinfo
+        as: "homelocation", // This is the alias of the table userinfo
       });
     }
   }
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: {
           model: "homelocations",
-          key: "homeID",
+          key: "HomeID",
         },
       },
       title: DataTypes.STRING,
