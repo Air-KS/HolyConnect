@@ -5,19 +5,25 @@
 
 // importation des modules
 const { notelocation } = require("../Models");
-const { homelocation } = require("../Models");
+const multer = require("multer");
 const jwt = require("../utils/jwt");
 const errorHandler = require("../config/errorHandler");
+const path = require("path");
+const fs = require("fs");
+
+// Configuration de multer pour le téléchargement de fichiers
+const storage = multer.memoryStorage(); // Stocke le fichier en mémoire
+const upload = multer({ storage: storage });
 
 module.exports = {
-  // fonction de création des notes
+  // Fonction de création des notes
   newnotes: async (req, res) => {
     try {
-      // récupération du header d'authentification
+      // Récupération du header d'authentification
       const headerAuth = req.headers["authorization"];
       const userId = jwt.getUserid(headerAuth);
 
-      const { title, content, picture } = req.body;
+      const { title, content } = req.body;
 
       if (!title || !content) {
         // Vérification de la présence des paramètres
@@ -33,7 +39,7 @@ module.exports = {
       }
 
       // Traitement de l'image (si elle est envoyée)
-      const pictureData = null;
+      let pictureData = null;
       if (req.file && req.file.buffer) {
         pictureData = req.file.buffer;
         // Vous pouvez enregistrer ou traiter l'image ici, par exemple, la sauvegarder sur le serveur
@@ -52,6 +58,7 @@ module.exports = {
           error: "Le contenu doit être compris entre 5 et 1500 caractères",
         });
       }
+
       notelocation
         .create({
           locationID: userId,
@@ -68,15 +75,16 @@ module.exports = {
           });
         })
         .catch(function (err) {
-          // gestion des erreurs
+          // Gestion des erreurs
           console.error("Erreur lors de la création de la note :", err);
           return res
             .status(500)
             .json({ error: "Erreur inattendue : merci de recommencer" });
         });
     } catch (error) {
-      // gestion des erreurs inattendues
+      // Gestion des erreurs inattendues
       console.error("Erreur inattendue :", error);
+      return res.status(500).json({ error: "Erreur inattendue" });
     }
   },
 
