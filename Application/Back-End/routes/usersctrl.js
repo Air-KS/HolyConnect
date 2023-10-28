@@ -50,12 +50,13 @@ module.exports = {
       }
 
       const userFound = await User.findOne({
+        //
         attributes: ["email"],
         where: { email: email },
       });
 
       if (userFound) {
-        return res.status(400).json({ error: "Email non valide" });
+        return res.status(400).json({ error: "Utilisateur existe deja" });
       }
 
       const bcryptedPassword = await bcrypt.hash(password, 5);
@@ -92,8 +93,12 @@ module.exports = {
         where: { email: email },
       });
 
-      if (!userFound) {
+      if (!emailREGEX.test(email)) {
         return res.status(400).json({ error: "Email non valide" });
+      }
+
+      if (!userFound) {
+        return res.status(400).json({ error: "utilisateur n'existe pas" });
       }
 
       const passwordMatch = await bcrypt.compare(password, userFound.password);

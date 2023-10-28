@@ -95,7 +95,7 @@ module.exports = {
   },
 
   // route read profile utilisateur
-  readprofile: async (req, res) => {
+  getprofile: async (req, res) => {
     // Code pour lire le profil
     const headerAuth = req.headers["authorization"];
     const userId = jwtUtils.getUserid(headerAuth);
