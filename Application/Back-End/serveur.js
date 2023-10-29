@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const apirouter = require("./api/apirouter").router;
 const errorHandler = require("./config/errorHandler");
 
+const cors = require("cors");
+
 const app = express();
 const port = 3000;
 
@@ -16,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Middleware pour les routes
 app.use("/api", apirouter);
+app.use(cors());
 
 // Middleware pour gérer les erreurs
 app.use(errorHandler);
