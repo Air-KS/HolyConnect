@@ -7,10 +7,9 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import formStyle from '../styles/formStyle';
 import baseStyle from '../styles/baseStyle';
 import tabStyle from '../styles/tabBar';
-import Footer from '../components/footer';
 
 // Composant pour l'onglet "Profile"
-const ProfileTab = () => {
+const ProfilTab = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
 
@@ -69,17 +68,17 @@ const Settings = () => {
 };
 
 // Composant principal de la page de profil
-const ProfileScreen = () => {
+const ProfilScreen = () => {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'profile', title: 'Profile' },
+    { key: 'profil', title: 'Profil' },
     { key: 'settings', title: 'Paramètres' },
     { key: 'social', title: 'Social' },
   ]);
 
   // Fonction pour rendre les scènes des onglets
   const renderScene = SceneMap({
-    profile: ProfileTab,
+    profil: ProfilTab,
     settings: Settings,
     social: () => <View style={styles.scene}><Text>Text 3</Text></View>,
   });
@@ -121,4 +120,4 @@ const styles = StyleSheet.create({
 });
 
 // Exportation du composant pour une utilisation dans d'autres fichiers
-export default ProfileScreen;
+export default ProfilScreen;
