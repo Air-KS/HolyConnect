@@ -16,9 +16,11 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Middleware CORS
+app.use(cors());
+
 // Middleware pour les routes
 app.use("/api", apirouter);
-app.use(cors());
 
 // Middleware pour gérer les erreurs
 app.use(errorHandler);
