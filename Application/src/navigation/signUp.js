@@ -4,39 +4,36 @@
 import React, { useState, useRef, useContext } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { AuthContext } from '../contexts/AuthContext';
-import { readUserDataFromFile, saveUserDataToFile, generateUniqueID } from '../utils/fileManager';
 import { FontAwesome } from '@expo/vector-icons';
 import stylesBulText from '../styles/bulText';
 import scrollView from '../screens/scrollView';
 import Footer from '../components/footer';
 import formStyle from '../styles/formStyle';
+import baseStyle from '../styles/baseStyle';
 
 // Composant principal de la page d'inscription
 const SignUpScreen = ({ navigation }) => {
 
   // Initialisation des états pour les champs du formulaire
   const [username, setUsername] = useState('');
-  const [userfirstname, setUserFirstName] = useState('');
-  const [userpseudoname, setUserPseudoName] = useState('');
-  const [useremail, setEmail] = useState('');
-  const [userpassword, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   // État pour gérer la visibilité du mot de passe
   const [hidePassword, setHidePassword] = useState(true);
 
   // Initialisation des états pour les erreurs de validation
   const [usernameError, setUsernameError] = useState('');
-  const [userfirstnameError, setUserFirstNameError] = useState('');
-  const [userpseudonameError, setUserPseudoNameError] = useState('');
-  const [useremailError, setEmailError] = useState('');
-  const [userpasswordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   // Références pour la gestion du focus entre les champs du formulaire
   const usernameRef = useRef(null);
-  const userfirstnameRef = useRef(null);
-  const userpseudonameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+
+  // État pour gérer les erreurs générales
+  const [generalError, setGeneralError] = useState('');
 
   // Utilisation du contexte d'authentification pour gérer la connexion
   const { setUserLoggedIn, updateUserPseudo } = useContext(AuthContext);
@@ -44,37 +41,22 @@ const SignUpScreen = ({ navigation }) => {
   // Fonction pour valider les champs du formulaire
   const validateForm = () => {
     let isValid = true;
-
-    // Vérification de chaque champ et mise à jour des erreurs si nécessaire
+    // Validation du champ 'Nom utilisateur'
     if (!username) {
-      setUsernameError('Nom requis');
+      setUsernameError('Nom utilisateur requis');
       isValid = false;
     } else {
       setUsernameError('');
     }
-
-    if (!userfirstname) {
-      setUserFirstNameError('Prénom requis');
-      isValid = false;
-    } else {
-      setUserFirstNameError('');
-    }
-
-    if (!userpseudoname) {
-      setUserPseudoNameError('Pseudo requis');
-      isValid = false;
-    } else {
-      setUserPseudoNameError('');
-    }
-
-    if (!useremail) {
+    // Validation du champ 'Email'
+    if (!email) {
       setEmailError('Email requis');
       isValid = false;
     } else {
       setEmailError('');
     }
-
-    if (!userpassword) {
+    // Validation du champ 'Mot de passe'
+    if (!password) {
       setPasswordError('Mot de passe requis');
       isValid = false;
     } else {
@@ -87,36 +69,60 @@ const SignUpScreen = ({ navigation }) => {
   // Fonction pour gérer l'inscription de l'utilisateur
   const handleSignUp = async () => {
     if (validateForm()) {
-      const existingUsers = await readUserDataFromFile();
 
-      // Vérification si l'utilisateur existe déjà
-      const userExists = existingUsers.some(user => user.userpseudoname === userpseudoname || user.useremail === useremail);
-      if (userExists) {
-        alert("Ce pseudo ou cet e-mail existe déjà !");
-        return;
-      }
-
-      // Création de l'objet utilisateur
+      // Création de l'objet utilisateur avec les données saisies
       const userData = {
-        id: generateUniqueID(),
         username: username,
-        userfirsname: userfirstname,
-        userpseudoname: userpseudoname,
-        useremail: useremail,
-        userpassword: userpassword
+        email: email,
+        password: password
       };
 
-      // Enregistrement des données de l'utilisateur
-      await saveUserDataToFile(userData);
-      setUserLoggedIn(true);
-      updateUserPseudo(userpseudoname);
-      navigation.navigate('Home');
+      // Tentative d'enregistrement de l'utilisateur via l'API
+      try {
+        const response = await fetch("http://192.168.1.17:3000/api/users/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(userData)
+        });
+
+        const result = await response.json();
+
+        // Ajoute un log pour voir la réponse du Statut
+        console.log("Statut:", response.status);
+
+        // Si la réponse est positive, l'utilisateur est redirigé vers la page d'accueil
+        if (response.status >= 200 && response.status < 300 && result) {
+          console.log("Enregistrement réussi");
+          setUserLoggedIn(true);
+          updateUserPseudo(username);
+          navigation.navigate('Home');
+          console.log("Réponse du serveur:", result, userData);
+        } else {
+          // Gestion des erreurs potentielles renvoyées par l'API
+          if (result && result.error) {
+            setGeneralError(result.error);
+            alert(result.error);
+          }
+          console.log("Enregistrement échoué");
+        }
+      } catch (error) {
+        // Gestion des erreurs de réseau
+        console.log("Erreur réseau lors de l'enregistrement");
+        setGeneralError("Erreur réseau");
+        alert("Erreur réseau");
+      }
     }
   };
 
   // Rendu du composant
   return (
     <ScrollView style={scrollView.scrollView}>
+
+      <Text style={{...baseStyle.text, fontSize: 40}}>{'\n'}HOLYCONNECT</Text>
+      <Text style={{...baseStyle.text, fontSize: 25}}>INSCRIVEZ-VOUS</Text>
+
       {/* Informations pour l'utilisateur */}
       <View style={stylesBulText.infoText}>
         <Text style={{fontWeight: 'bold', textAlign: 'center', width: '100%'}}>
@@ -130,61 +136,33 @@ const SignUpScreen = ({ navigation }) => {
             , et sont enregistrées en local à titre d'exemple pour le portfolio.{'\n'}
         </Text>
       </View>
-      <Text> {'\n'} </Text>
+      <Text></Text>
 
       {/* Formulaire d'inscription */}
       <View style={formStyle.container}>
 
-        {/* Nom */}
-        {usernameError ? <Text style={formStyle.errorText}>{usernameError} </Text> : null}
+        {/* Pseudo */}
+        {usernameError ? <Text style={formStyle.errorText}>{usernameError}</Text> : null}
         <View style={[formStyle.input, usernameError ? { borderColor: 'red' } : {}]}>
           <TextInput
             style={formStyle.text}
             ref={usernameRef}
-            placeholder="Nom"
+            placeholder="Nom d'utilisateur"
             selectionColor="#264A4A"
             value={username}
             onChangeText={setUsername}
-            onSubmitEditing={() => userfirstnameRef.current.focus()}
-          />
-        </View>
-
-        {/* Prenom */}
-        {userfirstnameError ? <Text style={formStyle.errorText}>{userfirstnameError}</Text> : null}
-        <View style={[formStyle.input, userfirstnameError ? { borderColor: 'red' } : {}]}>
-          <TextInput
-            style={formStyle.text}
-            ref={userfirstnameRef}
-            placeholder="Prénom"
-            selectionColor="#264A4A"
-            value={userfirstname}
-            onChangeText={setUserFirstName}
-            onSubmitEditing={() => userpseudonameRef.current.focus()}
-          />
-        </View>
-
-        {/* Pseudo */}
-        {userpseudonameError ? <Text style={formStyle.errorText}>{userpseudonameError}</Text> : null}
-        <View style={[formStyle.input, userpseudonameError ? { borderColor: 'red' } : {}]}>
-          <TextInput
-            style={formStyle.text}
-            ref={userpseudonameRef}
-            placeholder="Pseudo"
-            selectionColor="#264A4A"
-            value={userpseudoname}
-            onChangeText={setUserPseudoName}
             onSubmitEditing={() => emailRef.current.focus()}
           />
         </View>
 
         {/* Email */}
-        {useremailError ? <Text style={formStyle.errorText}>{useremailError}</Text> : null}
-        <View style={[formStyle.input, useremailError ? { borderColor: 'red' } : {}]}>
+        {emailError ? <Text style={formStyle.errorText}>{emailError}</Text> : null}
+        <View style={[formStyle.input, emailError ? { borderColor: 'red' } : {}]}>
           <TextInput
             style={formStyle.text}
             ref={emailRef}
             placeholder="Email"
-            value={useremail}
+            value={email}
             onChangeText={setEmail}
             selectionColor="#264A4A"
             onSubmitEditing={() => passwordRef.current.focus()}
@@ -192,13 +170,13 @@ const SignUpScreen = ({ navigation }) => {
         </View>
 
         {/* Password */}
-        {userpasswordError ? <Text style={formStyle.errorText}>{userpasswordError}</Text> : null}
-        <View style={[formStyle.input, useremailError ? { borderColor: 'red' } : {}]}>
+        {passwordError ? <Text style={formStyle.errorText}>{passwordError}</Text> : null}
+        <View style={[formStyle.input, emailError ? { borderColor: 'red' } : {}]}>
           <TextInput
             style={formStyle.text}
             ref={passwordRef}
             placeholder="Mot de Passe"
-            value={userpassword}
+            value={password}
             onChangeText={setPassword}
             secureTextEntry={hidePassword} // Cache le Mot de Passe
             autoCapitalize="none"
