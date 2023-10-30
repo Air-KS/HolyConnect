@@ -1,7 +1,7 @@
 {
 	"expo": {
-	  "name": "HolyConnect",
-	  "slug": "HolyConnect",
+	  "name": "HollyConnect",
+	  "slug": "HollyConnect",
 	  "version": "1.0.0",
 	  "orientation": "portrait",
 	  "icon": "./assets/defaults/icon.png",
@@ -16,15 +16,15 @@
 	  ],
 	  "ios": {
 		"supportsTablet": true,
-		"bundleIdentifier": "com.zana.HolyConnect",
+		"bundleIdentifier": "com.zana.HollyConnect",
 		"infoPlist": {
-		   "NSLocationWhenInUseUsageDescription": "Autorisez-vous HolyConnect à accéder à votre localisation lorsque l'application est en cours d'utilisation seulement ?",
-		   "NSLocationAlwaysUsageDescription": "Autorisez-vous HolyConnect à accéder à votre localisation même lorsque l'application n'est pas en cours d'utilisation ?",
-		   "NSLocationAlwaysAndWhenInUseUsageDescription": "Autorisez-vous HolyConnect à accéder à votre localisation en tout temps, même lorsque l'application n'est pas en cours d'utilisation ?"
+		   "NSLocationWhenInUseUsageDescription": "Autorisez-vous HollyConnect à accéder à votre localisation lorsque l'application est en cours d'utilisation seulement ?",
+		   "NSLocationAlwaysUsageDescription": "Autorisez-vous HollyConnect à accéder à votre localisation même lorsque l'application n'est pas en cours d'utilisation ?",
+		   "NSLocationAlwaysAndWhenInUseUsageDescription": "Autorisez-vous HollyConnect à accéder à votre localisation en tout temps, même lorsque l'application n'est pas en cours d'utilisation ?"
 		}
 	  },
 	  "android": {
-		"package": "com.zana.HolyConnect",
+		"package": "com.zana.HollyConnect",
 		"permissions": ["ACCESS_FINE_LOCATION", "ACCESS_BACKGROUND_LOCATION", "LOCATION"],
 		"adaptiveIcon": {
 		  "foregroundImage": "./assets/defaults/adaptive-icon.png",
