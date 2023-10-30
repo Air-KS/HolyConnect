@@ -19,10 +19,6 @@ export const AuthProvider = ({ children }) => {
     setUserLoggedIn(true);
     setUserId(user.id);
     setUserPseudo(user.pseudo);
-
-    // Chargez les données de l'utilisateur depuis le fichier JSON et stockez-les dans userData
-    const userDataFromJson = await loadUserDataFromFile(user.id); // Assurez-vous que loadUserDataFromFile est une fonction asynchrone
-    setUserData(userDataFromJson);
   };
 
   // Fonction pour déconnecter l'utilisateur
