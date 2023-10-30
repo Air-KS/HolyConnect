@@ -17,7 +17,7 @@ const MenuProfil = () => {
   const route = useRoute();
 
   // Récupération des fonctions et états depuis le contexte d'authentification
-  const { isUserLoggedIn, logOut, userId, userPseudo } = useContext(AuthContext);
+  const { isUserLoggedIn, logOut, userPseudo } = useContext(AuthContext);
 
   // Titres par défaut pour les différentes routes
   const defaultTitles = {
@@ -28,7 +28,7 @@ const MenuProfil = () => {
     CreateLocation: 'Création de Location',
     UiInterface: 'Interface',
     ApLocation: 'Aperçus Final',
-    Profil: 'Mon Profile',
+    Profil: 'Mon Profil',
     // ... autres écrans ...
   };
 
@@ -60,7 +60,7 @@ const MenuProfil = () => {
               <>
 
               <Text style={{ textAlign: 'center' }}>
-                {userPseudo ? 'Bonjour, ' : 'Non connecté'}
+                {userPseudo ? 'Bonjour, ' : 'Menu'}
                 {userPseudo &&<Text style={{ fontWeight: 'bold' }}>{userPseudo}</Text>} {'\n'} </Text>
 
                 {/* Options pour les utilisateurs connectés */}
