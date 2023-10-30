@@ -5,7 +5,7 @@ import React, { useState, useContext } from 'react';
 import { View, ScrollView, Text, TextInput, Button } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { AuthContext, userId } from '../contexts/AuthContext';
-import { saveUserLocationToFile } from '../utils/fileManager';
+//import { saveUserLocationToFile } from '../utils/fileManager';
 import scrollView from '../screens/scrollView';
 import tabStyle from '../styles/tabBar';
 import baseStyle from '../styles/baseStyle';
