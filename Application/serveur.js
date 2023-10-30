@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const apirouter = require("./api/apirouter").router;
-const errorHandler = require("./config/errorHandler");
+const apirouter = require("./Back-End/api/apirouter").router;
+const errorHandler = require("./Back-End/config/errorHandler");
 
 const cors = require("cors");
 
