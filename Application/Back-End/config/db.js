@@ -8,7 +8,7 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
   "database_hollyconnect_development",
   "root",
-  "qwertyseb",
+  "5910",
   {
     host: "127.0.0.1",
     port: "3306",
