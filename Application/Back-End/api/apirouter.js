@@ -41,7 +41,7 @@ exports.router = (function () {
   // Définition des routes liées aux note de locations
   apiRouter.route("/notelocation/newnote").post(notelocationsctrl.newnotes);
   apiRouter
-    .post("/notelocatiom/newnote", upload.single("picture"))
+    .post("/notelocation/newnote", upload.single("picture"))
     .post(notelocationsctrl.newnotes);
   apiRouter.route("/notelocation/getnote").get(notelocationsctrl.getnotes);
   apiRouter
