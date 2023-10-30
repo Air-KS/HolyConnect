@@ -4,7 +4,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, FlatList, Button, ScrollView } from 'react-native';
 import locationStyle from '../styles/locationStyle';
-import { getUserLocations, deleteLocation } from '../utils/fileManager';
+//import { getUserLocations, deleteLocation } from '../utils/fileManager';
 import { AuthContext } from '../contexts/AuthContext';
 
 // Composant représentant l'écran de gestion des locations
