@@ -19,6 +19,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Middleware CORS
 app.use(cors());
 
+// Middleware pour les logs
+app.use((req, res, next) => {
+  console.log(`Requête reçue: ${req.method} ${req.url}`);
+  next();
+});
+
 // Middleware pour les routes
 app.use("/api", apirouter);
 
