@@ -16,7 +16,7 @@ module.exports = {
         isAdmin: userData.isAdmin,
       },
       // clé secrète pour l'encodage
-      "JWT_SIGN_SECRET",
+      process.env.JWT_SIGN_SECRET,
       {
         // durée de validité du token
         expiresIn: "1h",
@@ -30,10 +30,11 @@ module.exports = {
   getUserid: function (authorization) {
     // récupération de l'ID utilisateur
     const jwttoken = module.exports.parseAuthorization(authorization);
+    console.log(jwttoken);
     if (jwttoken != null) {
       try {
         // vérification du token
-        const jwtToken = jwt.verify(jwttoken, "JWT_SIGN_SECRET");
+        const jwtToken = jwt.verify(jwttoken, process.env.JWT_SIGN_SECRET);
         if (jwtToken && jwtToken.userId) {
           // si le token est valide, on retourne l'ID utilisateur
           return jwtToken.userId;
@@ -55,7 +56,7 @@ module.exports = {
         userId: userId,
         // Autres données éventuelles
       },
-      "TEMPORARY_TOKEN_SECRET", // Clé secrète spécifique pour les tokens temporaires
+      process.env.TEMPORARY_TOKEN_SECRET, // Clé secrète spécifique pour les tokens temporaires
       {
         expiresIn: "15m", // Durée de validité du token temporaire (30 minutes)
       },
