@@ -9,6 +9,7 @@ import formStyle from '../styles/formStyle';
 import scrollView from '../screens/scrollView';
 import Footer from '../components/footer';
 import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Composant principal de la page de connexion
 const LoginScreen = ({ navigation }) => {
@@ -48,6 +49,12 @@ const LoginScreen = ({ navigation }) => {
       // Vérification de la réponse du serveur
       if (response.ok && data.token) {
         console.log("Réponse du serveur:", data);
+        try {
+          await AsyncStorage.setItem('userToken', data.token);
+          console.log("Token stocké avec succès", data.token);
+        } catch (e) {
+          console.error("Erreur de stockage du token:", e)
+        }
         setUserLoggedIn(true);
         setUserId(data.userId);
         setAuthContextUserId(data.userId);
