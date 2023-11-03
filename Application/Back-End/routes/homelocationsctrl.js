@@ -86,10 +86,12 @@ module.exports = {
 
   // route getlocations
   getlocations: async (req, res) => {
+    console.log("Requête GET reçue pour /api/homelocation/getloc");
     try {
       console.log("Nouvelle requête pour obtenir les lieux de l'utilisateur.");
 
       const headerAuth = req.headers["authorization"];
+      console.log("Token reçu depuis le client :", headerAuth);
       const userId = jwt.getUserid(headerAuth);
 
       console.log("ID de l'utilisateur extrait du token :", userId);
@@ -104,10 +106,9 @@ module.exports = {
             console.log("Voici les résultats");
             return res.status(200).json(userFound);
           } else {
-            console.log("L'utilisateur n'a pas de lieu.");
-            return res
-              .status(404)
-              .json({ error: "L'utilisateur n'a pas de putain de lieu" });
+            console.log("L'utilisateur n'a pas de lieu enregistrer");
+            return res.status(204).send();
+              //.json({ error: "L'utilisateur n'a pas de lieu enregistrer pour le moment" });
           }
         })
         .catch(function (err) {
