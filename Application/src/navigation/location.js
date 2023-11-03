@@ -1,66 +1,98 @@
 // src/navigation/location.js
 
-// Importation des dépendances nécessaires
-import { useState, useEffect, useContext } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, Button, ScrollView } from 'react-native';
+// Importations nécessaires
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, TouchableOpacity, FlatList, Button } from 'react-native';
 import locationStyle from '../styles/locationStyle';
-//import { getUserLocations, deleteLocation } from '../utils/fileManager';
 import { AuthContext } from '../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Composant représentant l'écran de gestion des locations
 function LocationScreen({ route, navigation }) {
-  const { userId } = useContext(AuthContext);
-
-  // État pour stocker les locations de l'utilisateur
+  const { userId, userPseudo } = useContext(AuthContext);
   const [locations, setLocations] = useState([]);
-
-  // État pour afficher ou masquer le bouton de suppression
   const [showDeleteButton, setShowDeleteButton] = useState(true);
 
-  // Effet pour charger les locations de l'utilisateur
-  useEffect(() => {
-    const loadUserLocations = async () => {
-      // Chargez les locations de l'utilisateur actuel (utilisez le userId du contexte)
-      const userLocations = await getUserLocations(userId);
-      setLocations(userLocations);
-    };
+  // Fonction pour charger les locations en utilisant le token stocké
+  const loadUserLocations = async () => {
+    const token = await AsyncStorage.getItem('userToken');
+    if (!token) {
+      console.error("Le token de l'utilisateur est absent ou vide.");
+      return;
+    }
 
-    // Appel de la fonction de chargement
+    console.log("Page Mes Location ID:", userId, "- Username:", userPseudo, "- Token:", token)
+
+    try {
+      const response = await fetch(`http://192.168.1.17:3000/api/homelocation/getloc?userId=${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setLocations(data);
+      } else {
+        console.error('Erreur de statut:', response.status);
+        const text = await response.text();
+        console.error('Réponse brute:', text);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des emplacements:', error);
+    }
+  };
+
+  // Fonction pour gérer la suppression d'une location
+  const handleDeleteLocation = async (item) => {
+    const token = await AsyncStorage.getItem('userToken');
+    if (!token) {
+      console.error("Le token de l'utilisateur est absent ou vide.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://192.168.1.17:3000/api/homelocation/deleteloc`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: item.id }),
+      });
+
+      if (response.ok) {
+        setLocations(prevLocations => prevLocations.filter(location => location.id !== item.id));
+      } else {
+        console.error('Erreur lors de la suppression:', await response.text());
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'emplacement:', error);
+    }
+  };
+
+  // Effet pour charger les locations au démarrage
+  useEffect(() => {
     loadUserLocations();
   }, [userId]);
 
-  // Effet pour ajouter une nouvelle location à la liste
+  // Effet pour ajouter une nouvelle location à partir du route params
   useEffect(() => {
     if (route.params?.locationTitle && !locations.includes(route.params?.locationTitle)) {
       setLocations(prev => [...prev, route.params?.locationTitle]);
     }
-  }, [route.params?.locationTitle]);
+  }, [route.params?.locationTitle, locations]);
 
-  // Fonction pour gérer la suppression d'une location
-  const handleDeleteLocation = async (item) => {
-    console.log("Emplacement supprimé :", item.title);
-    try {
-      // Supprimer l'élément du fichier JSON
-      await deleteLocation(item.id);
-
-      // Mettre à jour la liste des locations (en excluant l'élément supprimé)
-      setLocations((prevLocations) => prevLocations.filter((location) => location.id !== item.id));
-    } catch (error) {
-      console.error("Erreur lors de la suppression de l'emplacement", error);
-    }
-  };
-
-  // Rendu du composant
   return (
     <View style={locationStyle.container}>
       <Button
         title="Ajouter une nouvelle location"
-        onPress={() => {
-          navigation.navigate('CreateLocation');
-        }}
+        onPress={() => navigation.navigate('CreateLocation')}
       />
-
-      {/* Liste des locations */}
+      <Button
+        title="Charger mes locations"
+        onPress={loadUserLocations}
+      />
       <FlatList
         data={locations}
         renderItem={({ item }) => (
@@ -68,7 +100,6 @@ function LocationScreen({ route, navigation }) {
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('UiInterface');
-                console.log("Location cliquée :", item.title);
               }}
             >
               <Text style={locationStyle.text}>{item.title}</Text>
@@ -77,14 +108,12 @@ function LocationScreen({ route, navigation }) {
               <TouchableOpacity
                 style={locationStyle.button}
                 onPress={() => {
-                  // Action de modification
-                  // Vous pouvez naviguer vers la page de modification ici
+                  // Mettre en place la logique de modification ici
                 }}
               >
                 <Text style={locationStyle.buttonText}>Modifier</Text>
               </TouchableOpacity>
 
-              {/* Bouton de suppression */}
               {showDeleteButton && (
                 <TouchableOpacity
                   style={locationStyle.button}
@@ -95,17 +124,13 @@ function LocationScreen({ route, navigation }) {
                   <Text style={{ ...locationStyle.buttonText, color: 'red' }}>Supprimer</Text>
                 </TouchableOpacity>
               )}
-
             </View>
           </View>
         )}
-
-        // Fonction pour obtenir un identifiant unique pour chaque élément
         keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
       />
     </View>
   );
 }
 
-// Exportation du composant pour une utilisation dans d'autres fichiers
 export default LocationScreen;
