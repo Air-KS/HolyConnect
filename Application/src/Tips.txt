@@ -1,10 +1,25 @@
-Pour démarré l'application :
-- Ouvrire un émulateur endroid,
-- Allez dans le dossier du projet en l'occurrence MonProject,
-- cd MonProject
-- utiliser la ligne de commande suivante :
-npm run android
+Alors il faut faire cette commande à la raconde de l'application.
+npm install @react-native-async-storage/async-storage
 
-npx react-devtools
 
+Pour démarrer l'application :
+	- Allez à la racine de application : cd Application
+	- Installer les packages : npm install
+	- lancer un emulateur : npm run android
+	- lancer le serveur : node serveur.js
+
+
+Si à l'installer on rencontre ce problème
+Android Bundling failed 11ms
+Unable to resolve "@react-native-async-storage/async-storage" from "src\navigation\location.js"
+
+Alors il faut faire cette commande à la raconde de l'application.
+npm install @react-native-async-storage/async-storage
+
+
+
+Pour supprimer le cache au cas où l'application ne veut plus fonctionne ou que le cache est surcharger.
 npm start -- --reset-cache
+
+tools
+npx react-devtools
