@@ -37,13 +37,14 @@ exports.router = (function () {
 
   // Définition des routes liées aux locations
   apiRouter.route("/homelocation/newloc").post(homelocationsctrl.newlocations);
-  apiRouter.route("/homelocation/getloc").get(homelocationsctrl.getlocations);
+  apiRouter.route("/homelocation/getloc/").get(homelocationsctrl.getlocations);
   apiRouter
     .route("/homelocation/updateloc")
     .put(homelocationsctrl.updatelocations);
   apiRouter
     .route("/homelocation/deleteloc/:id")
     .delete(homelocationsctrl.deletelocations);
+    apiRouter.get('/homlocation/getlocId/:id', homelocationsctrl.getlocationId);
 
   // Définition des routes liées aux note de locations
   apiRouter.route("/notelocation/newnote").post(notelocationsctrl.newnotes);
