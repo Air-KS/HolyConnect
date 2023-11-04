@@ -76,12 +76,17 @@ function LocationScreen({ route, navigation }) {
     loadUserLocations();
   }, [userId]);
 
-  // Effet pour ajouter une nouvelle location à partir du route params
-  useEffect(() => {
-    if (route.params?.locationTitle && !locations.includes(route.params?.locationTitle)) {
-      setLocations(prev => [...prev, route.params?.locationTitle]);
-    }
-  }, [route.params?.locationTitle, locations]);
+// Dans LocationScreen
+useEffect(() => {
+  if (route.params?.namelocation) {
+    const newLocation = {
+      id: Date.now(),
+      title: route.params.namelocation, // Utilise le nom de la location comme titre
+      // Ajoute d'autres détails si nécessaire
+    };
+    setLocations(prevLocations => [...prevLocations, newLocation]);
+  }
+}, [route.params?.namelocation]); // Dépendance à route.params.namelocation
 
   return (
     <View style={locationStyle.container}>
@@ -102,7 +107,7 @@ function LocationScreen({ route, navigation }) {
                 navigation.navigate('UiInterface');
               }}
             >
-              <Text style={locationStyle.text}>{item.title}</Text>
+              <Text style={locationStyle.text}>{item.namelocation}</Text>
             </TouchableOpacity>
             <View style={locationStyle.buttonsContainer}>
               <TouchableOpacity
