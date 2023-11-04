@@ -1,6 +1,13 @@
 // Définition des routes liées aux utilisateurs
 // version 1.0.0
 // Auteur: LENNE Sebastien
+// mise à jours - Version 1.0.5 : ROGERET kevin
+
+/*
+  Mise à jours : [1.0.5]
+    Modifier la ligne 45 pour inclure "id" dans le route
+    Cette modification me permet de pouvoir supprimer un lieu par son ID
+*/
 
 const express = require("express");
 const multer = require("multer"); // Importez le module multer ici
@@ -35,7 +42,7 @@ exports.router = (function () {
     .route("/homelocation/updateloc")
     .put(homelocationsctrl.updatelocations);
   apiRouter
-    .route("/homelocation/deleteloc")
+    .route("/homelocation/deleteloc/:id")
     .delete(homelocationsctrl.deletelocations);
 
   // Définition des routes liées aux note de locations
