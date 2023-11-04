@@ -14,7 +14,7 @@ import * as Location from 'expo-location';
 function UiInterface({ route, navigation }) {
 
   // comment
-  const address = route.params?.locationAddress || "Adresse ici !";
+  const address = route.params?.adresslocation || "Adresse ici !";
 
   // État pour suivre le slide actif dans le Swiper
   const [activeSlide, setActiveSlide] = useState(0);
