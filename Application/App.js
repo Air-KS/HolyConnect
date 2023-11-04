@@ -12,7 +12,7 @@ import Login from './src/navigation/login';
 import SignUp from './src/navigation/signUp';
 import MenuProfil from './src/components/menuProfil';
 import Location from './src/navigation/location';
-import createLocation from './src/navigation/creacteLocation';
+import createLocation from './src/navigation/createLocation';
 import apLocation from './src/navigation/apLocation';
 import Profil from './src/navigation/profil';
 import UiInterface from './src/navigation/UiInterface';
