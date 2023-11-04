@@ -126,6 +126,7 @@ useEffect(() => {
       infolocation: route.params.infolocation,
     })
   }
+  console.log('Params de route:', route.params);
 }, [route.params]); // Dépendance à route.params.namelocation
 
   return (
@@ -150,22 +151,7 @@ useEffect(() => {
               <Text style={locationStyle.text}>{item.namelocation}</Text>
             </TouchableOpacity>
             <View style={locationStyle.buttonsContainer}>
-            <TouchableOpacity
-              style={locationStyle.button}
-              onPress={() => {
-              // Directement naviguer et passer les paramètres nécessaires
-              navigation.navigate('CreateLocation', {
-                id: item.id, // Passer l'ID pour la mise à jour
-                namelocation: item.namelocation,
-                adresslocation: item.adresslocation,
-                infolocation: item.infolocation,
-                isEditing: true,
-              });
-            }}
-            >
-            <Text style={locationStyle.buttonText}>Modifier</Text>
-            </TouchableOpacity>
-
+            <Text style={locationStyle.buttonText}> ID: {item.id || 'Aucun ID'} </Text>
               {showDeleteButton && (
                 <TouchableOpacity
                   style={locationStyle.button}
