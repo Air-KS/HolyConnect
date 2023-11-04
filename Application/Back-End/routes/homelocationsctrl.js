@@ -1,17 +1,27 @@
 // fichier qui contient la logique métier pour les lieux de l'utilisateur
 // version: 1.0.0
 // Auteur: LENNE Sebastien
+// Mise à jours, Version: 2.0.0 : ROGERET Kevin
+
+/*
+  Mise à jours : [2.0.0]
+    Refonte des fonctions pour les adapter au front.
+    getlocation ainsi que deletelocation ont été revisitées
+    pour faciliter l'accès et la compréhension entre le back et le front.
+
+  -- Des commentaires ont été ajoutés pour une meilleure lisibilité --
+*/
 
 // importation des modules
 const { homelocation } = require("../Models");
 const jwt = require("../utils/jwt");
 
+// Fonction pour ajouter un nouveau lieu
 module.exports = {
   newlocations: async (req, res) => {
     // récupération du header d'authentification
     try {
       console.log("Nouvelle requête de création de lieu.");
-
       const headerAuth = req.headers["authorization"];
       const userId = jwt.getUserid(headerAuth);
 
@@ -28,37 +38,43 @@ module.exports = {
         where: { homeID: userId },
       });
 
+      // comment
       const { namelocation, infolocation, adresslocation } = req.body;
 
       console.log("Données reçues de la requête :", req.body);
 
+      // Validation de la longueur du nom du lieu
       if (!namelocation || !infolocation || !adresslocation) {
         console.log("Paramètres manquants.");
         return res.status(400).json({ error: "Paramètres manquants" });
       }
 
-      if (namelocation.length < 5 || namelocation.length > 20) {
+      // Validation de la longueur des informations du lieu
+      if (namelocation.length < 1 || namelocation.length > 20) {
         console.log("Le nom du lieu ne respecte pas la longueur requise.");
         return res.status(400).json({
-          error: "Le nom du lieu doit être compris entre 5 et 20 caractères",
+          error: "Le nom du lieu doit être compris entre 1 et 20 caractères",
         });
       }
 
-      if (infolocation.length < 5 || infolocation.length > 350) {
+      // Validation de la longueur des informations du lieu
+      if (infolocation.length < 1 || infolocation.length > 350) {
         console.log("Les informations ne respectent pas la longueur requise.");
         return res.status(400).json({
           error:
-            "Les informations doivent être comprises entre 5 et 350 caractères",
+            "Les informations doivent être comprises entre 1 et 350 caractères",
         });
       }
 
-      if (adresslocation.length < 5 || adresslocation.length > 100) {
+      // Validation de la longueur de l'adresse du lieu
+      if (adresslocation.length < 1 || adresslocation.length > 100) {
         console.log("L'adresse ne respecte pas la longueur requise.");
         return res.status(400).json({
           error: "L'adresse doit être comprise entre 5 et 100 caractères",
         });
       }
 
+      // Création du lieu et réponse au client
       homelocation
         .create({
           homeID: userId,
@@ -84,18 +100,18 @@ module.exports = {
     }
   },
 
-  // route getlocations
+  // Fonction pour récupérer tous les lieux d'un utilisateur
   getlocations: async (req, res) => {
     console.log("Requête GET reçue pour /api/homelocation/getloc");
     try {
       console.log("Nouvelle requête pour obtenir les lieux de l'utilisateur.");
-
       const headerAuth = req.headers["authorization"];
       console.log("Token reçu depuis le client :", headerAuth);
       const userId = jwt.getUserid(headerAuth);
 
       console.log("ID de l'utilisateur extrait du token :", userId);
 
+      // Récupération des lieux associés à l'utilisateur
       homelocation
         .findAll({
           where: { homeID: userId },
@@ -122,16 +138,18 @@ module.exports = {
     }
   },
 
-  // route updatelocations
+  // Mise à jour d'un lieu après vérification de son existence
   updatelocations: async (req, res) => {
     try {
       console.log("Nouvelle requête de modification de lieu.");
 
+      // comment
       const headerAuth = req.headers["authorization"];
       const userId = jwt.getUserid(headerAuth);
 
       console.log("ID de l'utilisateur extrait du token :", userId);
 
+      // comment
       homelocation
         .findOne({
           where: { homeID: userId },
@@ -169,25 +187,26 @@ module.exports = {
     }
   },
 
-  // route deletelocations
+  // Fonction pour supprimer un lieu spécifique d'un utilisateur
   deletelocations: async (req, res) => {
     try {
+      const locationId = parseInt(req.params.id);
       console.log("Nouvelle requête de suppression de lieu.");
-
       const headerAuth = req.headers["authorization"];
       const userId = jwt.getUserid(headerAuth);
 
       console.log("ID de l'utilisateur extrait du token :", userId);
 
+      // Recherche du lieu à supprimer
       const userFound = await homelocation.findOne({
-        where: { homeID: userId },
+        where: { id: locationId },
       });
-
       if (!userFound) {
         console.log("Le lieu n'existe pas.");
         return res.status(404).json({ error: "Le lieu n'existe pas" });
       }
 
+      // Suppression du lieu trouvé
       userFound
         .destroy()
         .then(function () {
