@@ -104,7 +104,7 @@ useEffect(() => {
           <View style={locationStyle.listItem}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('UiInterface');
+                navigation.navigate('UiInterface', {adresslocation: item.adresslocation});
               }}
             >
               <Text style={locationStyle.text}>{item.namelocation}</Text>
