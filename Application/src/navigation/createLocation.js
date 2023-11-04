@@ -13,7 +13,14 @@ import createLocation from '../styles/createLocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Composant InfoGeneral pour les informations générales
-function InfoGeneral({ namelocation, setNamelocation, adresslocation, setAdresslocation, infolocation, setInfolocation }) {
+function InfoGeneral({ namelocation, setNamelocation, adresslocation, setAdresslocation, infolocation, setInfolocation, isEditing }) {
+  const titleNameLocation = isEditing ? "Changer le nom de votre location" : "Nommer votre Location";
+  const placeholderNameLocation = isEditing ? "Entrez le nouveau nom" : "Nom de location";
+  const adressNameLocation = isEditing ? "Changer le nom de votre location" : "Nommer votre Location";
+  const placeholderAdressLocation = isEditing ? "Entrez le nouveau nom" : "Nom de location";
+  const infoModifLocation = isEditing ? "Changer le nom de votre location" : "Nommer votre Location";
+  const placeholderInfoModifLocation = isEditing ? "Entrez le nouveau nom" : "Nom de location";
+
     return (
         <ScrollView style={scrollView.scrollView}>
             <View style={[createLocation.scene]}>
@@ -126,45 +133,56 @@ function InfoLocation({ infolocation, setInfolocation }) {
 const initialLayout = { width: '100%' };
 
 // Fonction pour sauvegarder la location dans la base de données
-const saveLocationToDatabase = async (userId, newLocation) => {
+const saveLocationToDatabase = async (userId, newLocation, isEditing) => {
   const token = await AsyncStorage.getItem('userToken');
   if (!token) {
-      console.error("Le token de l'utilisateur est absent ou vide.");
-      return;
+    console.error("Le token de l'utilisateur est absent ou vide.");
+    return;
   }
+
+  // Choix de la méthode et de l'URL en fonction de si on est en train de modifier ou de créer une location
+  const method = isEditing ? 'PUT' : 'POST';
+  const url = isEditing
+    ? `http://192.168.1.17:3000/api/homelocation/${newLocation.id}`
+    : `http://192.168.1.17:3000/api/homelocation/newloc`;
+
   try {
-      const response = await fetch(`http://192.168.1.17:3000/api/homelocation/newloc`, {
-          method: 'POST',
-          headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              namelocation: newLocation.namelocation,
-              adresslocation: newLocation.adresslocation,
-              infolocation: newLocation.infolocation
-          }),
-      });
-      if (response.ok) {
-          return await response.json();
-      } else {
-          console.error('Erreur lors de l\'enregistrement:', await response.text());
-      }
+    const response = await fetch(url, {
+      method: method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        namelocation: newLocation.namelocation,
+        adresslocation: newLocation.adresslocation,
+        infolocation: newLocation.infolocation
+      }),
+    });
+
+    // comment
+    if (response.ok) {
+      return await response.json();
+    } else {
+      console.error('Erreur lors de l\'enregistrement:', await response.text());
+    }
   } catch (error) {
-      console.error('Erreur lors de l\'enregistrement de la location:', error);
+    console.error('Erreur lors de la sauvegarde de la location:', error);
   }
 };
 
 // Composant représentant l'écran de création de location
-function CreateLocation({ navigation }) {
+function CreateLocation({ route, navigation }) {
     // Contexte de l'utilisateur
     const { userId } = useContext(AuthContext);
+
+    //const location = route.params?.location;
     //console.log("Recherche de l'utilisateur avec l'ID:", userId);
 
     // États pour le titre de la location et l'adresse
-    const [namelocation, setNamelocation] = useState('');
-    const [adresslocation, setAdresslocation] = useState('');
-    const [infolocation, setInfolocation] = useState('');
+    const [namelocation, setNamelocation] = useState(route.params?.namelocation ?? '');
+    const [adresslocation, setAdresslocation] = useState(route.params?.adresslocation ?? '');
+    const [infolocation, setInfolocation] = useState(route.params?.infolocation ?? '');
 
     // Index et routes pour l'onglet
     const [index, setIndex] = useState(0);
@@ -182,6 +200,7 @@ function CreateLocation({ navigation }) {
                   namelocation={namelocation} setNamelocation={setNamelocation}
                   adresslocation={adresslocation} setAdresslocation={setAdresslocation}
                   infolocation={infolocation} setInfolocation={setInfolocation}
+                  isEditing={!!route.params}
                  />;
             default:
                 return null;
@@ -207,6 +226,7 @@ function CreateLocation({ navigation }) {
               <Button
                 title="Sauvegarder"
                 onPress={async () => {
+                  const isEditing = !!route.params?.nameLocation;
                   const result = await saveLocationToDatabase(userId, {
                     namelocation: namelocation,
                     adresslocation: adresslocation,
