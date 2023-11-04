@@ -100,6 +100,36 @@ module.exports = {
     }
   },
 
+  // Ajoute cette fonction dans ton module.exports
+
+  getlocationId: async (req, res) => {
+    try {
+      console.log("Nouvelle requête pour obtenir les IDs des lieux.");
+      // Supposons que l'ID de l'utilisateur est transmis directement dans la requête (par exemple, dans la query ou les paramètres)
+      const locationId = req.params.id;  // ou req.params.userId selon ton routage
+
+      console.log("ID de l'utilisateur reçu dans la requête :", locationId);
+
+      // Récupération des IDs des lieux associés à l'utilisateur
+      const location = await homelocation.findOne({
+        where: { id: locationId }
+      });
+
+      // Si des lieux sont trouvés, renvoie les IDs, sinon renvoie une réponse indiquant qu'aucun lieu n'a été trouvé
+      // Si la location est trouvée, renvoie les informations de la location, sinon renvoie une réponse indiquant qu'aucune location n'a été trouvée
+      if (location) {
+        console.log("Informations de la location trouvées :", location);
+        return res.status(200).json(location);
+      } else {
+        console.log("Aucune location trouvé pour cet ID.");
+        return res.status(204).send();
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des IDs des lieux :", error);
+      return res.status(500).json({ error: "Erreur interne du serveur" });
+    }
+  },
+
   // Fonction pour récupérer tous les lieux d'un utilisateur
   getlocations: async (req, res) => {
     console.log("Requête GET reçue pour /api/homelocation/getloc");
