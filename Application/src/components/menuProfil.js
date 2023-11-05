@@ -27,6 +27,7 @@ const MenuProfil = () => {
     Location: 'Mes Locations',
     CreateLocation: 'Création de Location',
     UiInterface: 'Interface',
+    MaLocation: 'Ma Location',
     ApLocation: 'Aperçus Final',
     Profil: 'Mon Profil',
     // ... autres écrans ...
