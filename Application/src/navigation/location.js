@@ -44,42 +44,6 @@ function LocationScreen({ route, navigation }) {
     }
   };
 
-  // Fonction pour modifier la location
-  const handleUpdateLocation = async (item, newDetails) => {
-    const token = await AsyncStorage.getItem('userToken');
-    if (!token) {
-      console.error("Le token de l'utilisateur est absent ou vide.");
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://192.168.1.17:3000/api/homelocation/updateloc`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: item.id,
-          ...newDetails // Ici, tu devras passer les nouvelles informations à mettre à jour
-        }),
-      });
-
-      if (response.ok) {
-        // Mise à jour de l'état local après la mise à jour réussie
-        setLocations(prevLocations =>
-          prevLocations.map(location =>
-            location.id === item.id ? { ...location, ...newDetails } : location
-          )
-        );
-      } else {
-        console.error('Erreur lors de la mise à jour:', await response.text());
-      }
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour de l\'emplacement:', error);
-    }
-  };
-
   // Fonction pour gérer la suppression d'une location
   const handleDeleteLocation = async (item) => {
     const token = await AsyncStorage.getItem('userToken');
@@ -116,19 +80,6 @@ function LocationScreen({ route, navigation }) {
     loadUserLocations();
   }, [userId]);
 
-// Dans LocationScreen
-useEffect(() => {
-  if (route.params?.isEditing) {
-    handleUpdateLocation({
-      id: route.params.id,
-      namelocation: route.params.namelocation,
-      adresslocation: route.params.adresslocation,
-      infolocation: route.params.infolocation,
-    })
-  }
-  console.log('Params de route:', route.params);
-}, [route.params]); // Dépendance à route.params.namelocation
-
   return (
     <View style={locationStyle.container}>
       <Button
@@ -145,7 +96,17 @@ useEffect(() => {
           <View style={locationStyle.listItem}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('UiInterface', {adresslocation: item.adresslocation});
+                console.log('Navigating to UiInterface with params:', {
+                  adresslocation: item.adresslocation,
+                  namelocation: item.namelocation,
+                  infolocation: item.infolocation,
+                });
+                navigation.navigate('UiInterface', {
+                  id: item.id,
+                  adresslocation: item.adresslocation,
+                  namelocation: item.namelocation,
+                  infolocation: item.infolocation,
+                });
               }}
             >
               <Text style={locationStyle.text}>{item.namelocation}</Text>
