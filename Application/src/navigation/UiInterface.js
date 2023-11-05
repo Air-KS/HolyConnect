@@ -1,7 +1,7 @@
 // src/navigation/apLocation.js
 
 // Importation des dépendances nécessaires
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, Linking } from 'react-native';
 import Swiper from 'react-native-swiper';
 import locationStyle from '../styles/locationStyle';
@@ -13,8 +13,12 @@ import * as Location from 'expo-location';
 // Composant pour afficher un aperçu de la location
 function UiInterface({ route, navigation }) {
 
-  // comment
   const address = route.params?.adresslocation || "Adresse ici !";
+
+  // Etat
+  const [namelocation, setNamelocation] = useState('');
+  const [infolocation, setInfolocation] = useState('');
+  const [locationId, setLocationId] = useState('');
 
   // État pour suivre le slide actif dans le Swiper
   const [activeSlide, setActiveSlide] = useState(0);
@@ -33,6 +37,26 @@ function UiInterface({ route, navigation }) {
   const onIndexChanged = (index) => {
     setActiveSlide(index);
   };
+
+  useEffect(() => {
+    const fetchLocationData = async () => {
+      try {
+        const locationId = route.params?.id;
+        console.log('locationId:', locationId);
+        const response = await fetch(`http://192.168.1.17:3000/api/homelocation/getlocId/${locationId}`);
+        if (!response.ok) {
+          throw new Error('Erreur réseau, impossible de récupérer les données.');
+        }
+        const data = await response.json();
+        setNamelocation(data.namelocation);
+        setInfolocation(data.infolocation);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données de la location:', error);
+      }
+    };
+
+    fetchLocationData();
+  }, []);
 
   // Cette fonction sera déclenchée lorsque l'utilisateur cliquera sur "Commerce"
   const handleCommerceClick = async () => {
@@ -110,7 +134,15 @@ function UiInterface({ route, navigation }) {
 
             {/* Section "Ma location" */}
             <View style={locationStyle.panelLeft}>
+            <TouchableOpacity style={locationStyle.commonImage}
+              onPress={() =>
+                navigation.navigate('MaLocation', {
+                  id: locationId,
+                  namelocation: namelocation,
+                  infolocation: infolocation,
+              })}>
               <Image source={maLocation} style={locationStyle.commonImage}/>
+            </TouchableOpacity>
             </View>
             <Text style={locationStyle.panelText}>MA LOCATION</Text>
 
