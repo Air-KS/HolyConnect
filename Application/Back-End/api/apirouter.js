@@ -44,7 +44,7 @@ exports.router = (function () {
   apiRouter
     .route("/homelocation/deleteloc/:id")
     .delete(homelocationsctrl.deletelocations);
-    apiRouter.get('/homlocation/getlocId/:id', homelocationsctrl.getlocationId);
+    apiRouter.get('/homelocation/getlocId/:id', homelocationsctrl.getlocationId);
 
   // Définition des routes liées aux note de locations
   apiRouter.route("/notelocation/newnote").post(notelocationsctrl.newnotes);
