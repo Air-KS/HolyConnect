@@ -25,7 +25,7 @@ function HomeScreen({ navigation }) {
     }
     try {
         console.log(`Recherche en cours pour l'ID: ${trimmedSearchID}`);
-        const response = await fetch(`http://192.168.1.17:3000/api/homlocation/getlocId/${trimmedSearchID}`, {
+        const response = await fetch(`http://192.168.1.17:3000/api/homelocation/getlocId/${trimmedSearchID}`, {
             headers: {
                 'Content-Type': 'application/json'
             }
