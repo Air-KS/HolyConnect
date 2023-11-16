@@ -91,7 +91,7 @@ HTTPStatus Exception: 401
 
 | File                                                                                                                                                           | Summary                   |
 | ---                                                                                                                                                            | ---                       |
-| [Conditions d'Utilisation](https://github.com/Air-KS/HolyConnect/blob/main/Conditions d'Utilisation)                                                           | HTTPStatus Exception: 401 |
+| [Conditions d'Utilisation](https://github.com/Air-KS/HolyConnect/blob/main/Conditions%20d'Utilisation)                                                           | HTTPStatus Exception: 401 |
 | [Page d'accueil](https://github.com/Air-KS/HolyConnect/blob/main/Page d'accueil)                                                                               | HTTPStatus Exception: 401 |
 | [Règle de Confidentialité](https://github.com/Air-KS/HolyConnect/blob/main/Règle de Confidentialité)                                                           | HTTPStatus Exception: 401 |
 | [.env](https://github.com/Air-KS/HolyConnect/blob/main/Application\.env)                                                                                       | HTTPStatus Exception: 401 |
