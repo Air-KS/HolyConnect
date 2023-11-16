@@ -1,4 +1,4 @@
-// src/navigation/loginn.js
+// src/navigation/login.js
 
 // Importation des dépendances nécessaires
 import React, { useState, useRef, useContext } from "react";
@@ -9,51 +9,64 @@ import formStyle from '../styles/formStyle';
 import scrollView from '../screens/scrollView';
 import Footer from '../components/footer';
 import { FontAwesome } from '@expo/vector-icons';
-import { readUserDataFromFile } from '../utils/fileManager';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Composant principal de la page de connexion
 const LoginScreen = ({ navigation }) => {
 
   // États pour suivre les valeurs entrées par l'utilisateur
-  const [userpseudoname, setUserPseudoName] = useState('');
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [userId, setUserId] = useState(null);
   const [password, setPassword] = useState('');
   const [hidePassword, setHidePassword] = useState(true); // État pour masquer/afficher le mot de passe
 
   // Utilisation du contexte d'authentification
-  const { setUserLoggedIn } = useContext(AuthContext);
+  const { setUserLoggedIn, setAuthContextUserId, setUserPseudo, updateUserPseudo } = useContext(AuthContext);
 
   // Référence pour le champ du mot de passe
   const passwordRef = useRef(null);
 
   // Fonction pour gérer la connexion
   const handleLogin = async () => {
-    const validUsername = "id"
-    const validPassword = "pw"
+    try {
+      const response = await fetch('http://192.168.1.17:3000/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    // Lisez les données du fichier
-    const storedData = await readUserDataFromFile();
-    console.log("Stored Data:", storedData);
+    // Logg pour la connexion au serveur et les donnée envoyées
+      console.log("Code de statut:", response.status);
+      console.log("Données envoyées:", { email, password, username });
 
-    // Vérification des identifiants & Mot de Passe
-    if (userpseudoname === validUsername && password === validPassword) {
-      setUserLoggedIn(true);
-      navigation.navigate('Home');
-      return;
-    }
+      const data = await response.json();
 
-    // Vérifiez si l'utilisateur existe dans le fichier
-    const users = await readUserDataFromFile();
-    const userExists = users.some(user => (user.userpseudoname === userpseudoname || user.useremail === userpseudoname) && user.userpassword === password);
+      console.log("Mot de passe envoyé:", password);
 
-    // Si l'utilisateur existe, connectez-vous, sinon affichez une erreur
-    if (userExists) {
-      setUserLoggedIn(true);
-      const userFound = users.find(user => (user.userpseudoname === userpseudoname || user.useremail === userpseudoname) && user.userpassword === password);
-      setUserId(userFound.userpseudoname);
-      navigation.navigate('Home');
-    } else {
-      alert('Erreur : Identification ou mot de passe incorrect. Veuillez réessayer.');
+      // Vérification de la réponse du serveur
+      if (response.ok && data.token) {
+        console.log("Réponse du serveur:", data);
+        try {
+          await AsyncStorage.setItem('userToken', data.token);
+          console.log("Token stocké avec succès", data.token);
+        } catch (e) {
+          console.error("Erreur de stockage du token:", e)
+        }
+        setUserLoggedIn(true);
+        setUserId(data.userId);
+        setAuthContextUserId(data.userId);
+        updateUserPseudo(data.username);
+        navigation.navigate('Home');
+      } else {
+        console.log("Data:", data);
+        alert('Erreur : Identification ou mot de passe incorrect. Veuillez réessayer.');
+      }
+    } catch (error) {
+      console.error("Erreur lors de la connexion:", error);
+      alert('Une erreur s’est produite. Veuillez réessayer.');
     }
   };
 
@@ -71,9 +84,9 @@ const LoginScreen = ({ navigation }) => {
         <View style={formStyle.input}>
           <TextInput
             style={formStyle.text}
-            placeholder="Email ou Identifiant"
-            value={userpseudoname}
-            onChangeText={setUserPseudoName}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
             autoCapitalize="none"
             selectionColor="#264A4A"
             returnKeyType="next"

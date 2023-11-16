@@ -14,19 +14,48 @@ function HomeScreen({ navigation }) {
   // État pour suivre la valeur de l'ID entré par l'utilisateur
   const [searchID, setSearchID] = useState('');
 
-  // ID fictif pour la démonstration
-  const FICTIVE_ID = "123ABC456";
-
   // Fonction pour gérer la soumission de la recherche
-  const handleSearchSubmit = () => {
-    if (searchID === FICTIVE_ID) {
-      // Si l'ID est correct, naviguer vers l'écran 'ApLocation'
-      navigation.navigate('ApLocation');
-    } else {
-      // Si l'ID est incorrect, afficher une alerte
-      Alert.alert('Erreur', 'Votre Identifiant est incorrecte, merci de renseigner un ID Valable');
+  const handleSearchSubmit = async () => {
+    const trimmedSearchID = searchID.trim();
+
+    // Vérifier que l'ID n'est pas vide
+    if (trimmedSearchID === "") {
+        Alert.alert('Erreur', 'Veuillez entrer un ID.');
+        return;
     }
-  }
+    try {
+        console.log(`Recherche en cours pour l'ID: ${trimmedSearchID}`);
+        const response = await fetch(`http://192.168.1.17:3000/api/homelocation/getlocId/${trimmedSearchID}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Vérification de la réponse du serveur
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Data reçue de l\'API:', data);
+
+          // Assurez-vous que data contient les informations de la location
+          if (data && data.id) {
+              navigation.navigate('UiInterface', {
+                  id: data.id,
+                  namelocation: data.namelocation,
+                  adresslocation: data.adresslocation,
+                  infolocation: data.infolocation,
+              });
+          } else {
+              console.error('Format de données inattendu:', data);
+          }
+        } else {
+          console.error('Erreur de statut:', response.status);
+          Alert.alert('Erreur', 'ID non trouvé, veuillez vérifier et réessayer.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la recherche de l’ID:', error);
+        Alert.alert('Erreur', 'Une erreur est survenue lors de la recherche.');
+      }
+    };
 
   // Rendu du composant
   return (
