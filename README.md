@@ -260,3 +260,10 @@ This project is protected under the [SELECT-A-LICENSE](https://choosealicense.co
 [**Return**](#Top)
 
 ---
+
+
+
+# Author
+ROGERET Kevin - [Linkedin](https://www.linkedin.com/in/kevinrogeret/) <br>
+LENNE Sebastien - [Linkedin](https://www.linkedin.com/in/sebastien-lenne-134a61277/) <br>
+> Project carried out within the framework of the school **[Holberton School](https://www.holbertonschool.com/).**<br>
