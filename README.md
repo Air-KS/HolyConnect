@@ -1,7 +1,7 @@
 <div align="center">
     <h1>HOLLYCONNECT</h1>
 	<p align="center">
-    <img source=Application/src/Captured’écran2023-11-17.png>
+    <img source=Application/src//Capture d’écran 2023-11-17 à 08.52.41.png>
   </a>
 </p>
 	<H2>INTRODUCTION<H2>
