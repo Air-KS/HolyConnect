@@ -1,8 +1,8 @@
 <div align="center">
     <h1>HOLLYCONNECT</h1>
 	<p align="center">
-    <img source=Application/src//Capture d’écran 2023-11-17 à 08.52.41.png>
-  </a>
+	<a>
+<img src="Application/src/Capture%20d%E2%80%99e%CC%81cran%202023-11-17%20a%CC%80%2008.52.41.png" alt="Description de l'image">  </a>
 </p>
 	<H2>INTRODUCTION<H2>
 	<h3>HollyConnect and an end-of-1st-year Holberton School portfolio project.The HollyConnect app enhances your vacation rental experience by providing you with immediate access to all the essential information about your accommodation. From details about your rental to local activities, we do everything to make your stay perfect and hassle-free. </h3>
