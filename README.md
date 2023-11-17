@@ -167,7 +167,7 @@ git clone https://github.com/Air-KS/HolyConnect
 
 2. Change to the project directory:
 ```sh
-cd HolyConnect
+cd Application or cd HolyConnect/Application
 ```
 
 3. Install the dependencies:
@@ -178,7 +178,7 @@ npm install
 ### 🤖 Running HolyConnect
 
 ```sh
-node app.js
+npm run android
 ```
 
 ### 🧪 Tests
