@@ -1,5 +1,9 @@
 <div align="center">
     <h1>HOLLYCONNECT</h1>
+	<p align="center">
+    <img source=Application/src/Captured’écran2023-11-17.png>
+  </a>
+</p>
 	<H2>INTRODUCTION<H2>
 	<h3>HollyConnect and an end-of-1st-year Holberton School portfolio project.The HollyConnect app enhances your vacation rental experience by providing you with immediate access to all the essential information about your accommodation. From details about your rental to local activities, we do everything to make your stay perfect and hassle-free. </h3>
 
@@ -33,20 +37,22 @@
 ---
 
 ## 📖 Table of Contents
-- [📂 Repository Structure](#repository-structure)
-- [⚙️ Modules](#modules)
-- [🚀 Getting Started](#getting-started)
-    - [🔧 Installation](#installation)
-    - [🤖 Running HolyConnect](#running-holyconnect)
-    - [🧪 Tests](#tests)
-- [🤝 Contributing](#contributing)
-- [📄 License](#license)
-- [👏 Acknowledgments](#acknowledgments)
+
+- [Table of Contents](#Table-of-contents)
+- [Repository Structure](#repository-structure)
+- [Modules](#Modules)
+- [Getting Started](#getting-started)
+    - [Installation](#installation)
+    - [Running HolyConnect](#running-holyconnect)
+    - [Tests](#tests)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
 ---
 
 
-## 📂 Repository Structure
+### 📂 Repository Structure
 
 ```sh
 └── HolyConnect/
@@ -79,7 +85,7 @@
 ```
 
 ---
-
+<a name="Modules"></a>
 ## ⚙️ Modules
 <details closed><summary>Root</summary>
 
@@ -151,7 +157,6 @@
 
 ## 🚀 Getting Started
 
----
 
 ### 🔧 Installation
 
@@ -192,10 +197,7 @@ Contributions are welcome! Here are several ways you can contribute:
 - **[Join the Discussions](https://github.com/Air-KS/HolyConnect/discussions)**: Share your insights, provide feedback, or ask questions.
 - **[Report Issues](https://github.com/Air-KS/HolyConnect/issues)**: Submit bugs found or log feature requests for AIR-KS.
 
-#### *Contributing Guidelines*
-
-<details closed>
-<summary>Click to expand</summary>
+*Contributing Guidelines*
 
 1. **Fork the Repository**: Start by forking the project repository to your GitHub account.
 2. **Clone Locally**: Clone the forked repository to your local machine using a Git client.
@@ -217,9 +219,6 @@ Contributions are welcome! Here are several ways you can contribute:
    ```
 7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
 
-Once your PR is reviewed and approved, it will be merged into the main branch.
-
-</details>
 
 ---
 
@@ -227,6 +226,7 @@ Once your PR is reviewed and approved, it will be merged into the main branch.
 
 
 Ce projet est protégé par la licence [MIT](https://choosealicense.com/licenses/mit/). Pour plus de détails, consultez le fichier [LICENSE](https://github.com/votre-utilisateur/votre-projet/blob/master/LICENSE).
+
 
 ---
 
@@ -238,9 +238,7 @@ Ce projet est protégé par la licence [MIT](https://choosealicense.com/licenses
 ---
 
 
-
-# Author
+###  Author
 ROGERET Kevin - [Linkedin](https://www.linkedin.com/in/kevinrogeret/) <br>
 LENNE Sebastien - [Linkedin](https://www.linkedin.com/in/sebastien-lenne-134a61277/) <br>
 > Project carried out within the framework of the school **[Holberton School](https://www.holbertonschool.com/).**<br>
-
